@@ -19,7 +19,10 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
            $request->setTrustedProxies(
                 [$request->getClientIp()],
-                SymfonyRequest::HEADER_X_FORWARDED_ALL
+                SymfonyRequest::HEADER_X_FORWARDED_FOR |
+                SymfonyRequest::HEADER_X_FORWARDED_HOST |
+                SymfonyRequest::HEADER_X_FORWARDED_PORT |
+                SymfonyRequest::HEADER_X_FORWARDED_PROTO
             );
 
             URL::forceScheme('https');

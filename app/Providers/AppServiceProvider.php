@@ -13,11 +13,11 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    public function boot(): void
+    public function boot(Request $request): void
     {
         if ($this->app->environment('production')) {
-            Request::setTrustedProxies(
-                [Request::getClientIp()],
+           $request->setTrustedProxies(
+                [$request->getClientIp()],
                 Request::HEADER_X_FORWARDED_ALL
             );
 

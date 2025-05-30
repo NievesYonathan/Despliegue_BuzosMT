@@ -12,7 +12,7 @@ class ListaCargoController extends Controller
 
     public function __construct()
     {
-        $this->apiBase = 'http://localhost/dash/Proyecto-Buzos-MT/Trimestre IV/API REST/Buzos_MT/public/api';
+        $this->apiBase = env('APP_URL') . '/api';
         Http::timeout(5);
     }
 

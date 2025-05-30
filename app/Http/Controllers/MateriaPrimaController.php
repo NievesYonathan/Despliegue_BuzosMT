@@ -16,7 +16,8 @@ class MateriaPrimaController extends Controller
 
         try {
             // Llamar a la API para obtener los datos de materia prima
-            $response = Http::get('http://localhost:8000/api/materia-prima');
+            $response = Http::get(config('app.url') . '/api/materia-prima');
+
 
             if ($response->successful()) {
                 $materiaPrima = $response->json(); // Convertir la respuesta JSON en un array
@@ -73,7 +74,7 @@ class MateriaPrimaController extends Controller
         ]);
 
         try {
-            $response = Http::post('http://localhost:8000/api/materia-prima', [
+            $response = Http::get(config('app.url') . '/api/materia-prima', [
                 'mat_pri_nombre' => $request->input('nombre'),
                 'mat_pri_descripcion' => $request->input('descripcion'),
                 'mat_pri_unidad_medida' => $request->input('unidad_medida'),
@@ -109,7 +110,7 @@ class MateriaPrimaController extends Controller
     {
         try {
             // Enviar solicitud DELETE a la API
-            $response = Http::delete("http://localhost:8000/api/materia-prima/{$id}");
+            $response = Http::delete(config('app.url') . "/api/materia-prima/{$id}");
 
             if ($response->successful()) {
                 return redirect()->route('lista-item')->with('success', 'Materia prima eliminada correctamente.');

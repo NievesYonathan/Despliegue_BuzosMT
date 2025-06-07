@@ -1,7 +1,26 @@
 <x-guest-layout>
+    @php
+            $fullName = $user['name'] ?? '';
+        $parts = explode(' ', trim($fullName));
+
+        // Si hay al menos 3 partes, suponemos que los 2 primeros son nombres
+        if (count($parts) >= 3) {
+            $nombres = $parts[0] . ' ' . $parts[1];
+            $apellidos = implode(' ', array_slice($parts, 2));
+        }
+        // Si hay 2 partes, uno es nombre y otro es apellido
+        elseif (count($parts) === 2) {
+            $nombres = $parts[0];
+            $apellidos = $parts[1];
+        }
+        // Si solo hay 1 parte, se asume como nombre
+        else {
+            $nombres = $parts[0] ?? '';
+            $apellidos = '';
+        }
+    @endphp
     <form method="POST" action="{{ route('register') }}" id="registroForm">
         @csrf
-
         <!-- Estado y dirección ocultos -->
         <input type="hidden" name="usu_estado" value="1">
         <input type="hidden" name="usu_direccion" value="Bogotá">
@@ -33,7 +52,7 @@
                 <!-- Nombres -->
                 <div class="mt-4">
                     <x-input-label for="usu_nombres" :value="__('Nombres')" />
-                    <x-text-input id="usu_nombres" class="block mt-1 w-full" type="text" name="usu_nombres" required />
+                    <x-text-input id="usu_nombres" class="block mt-1 w-full" type="text" name="usu_nombres" value="{{ old('usu_nombres', $nombres ?? '') }}" required />
                     <div class="error-message" id="error-usu_nombres" style="display: none; color: red; font-size: 0.875rem;"></div>
                 </div>
             </div>
@@ -41,7 +60,7 @@
                 <!-- Apellidos -->
                 <div class="mt-4">
                     <x-input-label for="usu_apellidos" :value="__('Apellidos')" />
-                    <x-text-input id="usu_apellidos" class="block mt-1 w-full" type="text" name="usu_apellidos" required />
+                    <x-text-input id="usu_apellidos" class="block mt-1 w-full" type="text" name="usu_apellidos" value="{{ old('usu_apellidos', $apellidos ?? '') }}" required />
                     <div class="error-message" id="error-usu_apellidos" style="display: none; color: red; font-size: 0.875rem;"></div>
                 </div>
             </div>
@@ -78,16 +97,19 @@
                     <div class="error-message" id="error-usu_telefono" style="display: none; color: red; font-size: 0.875rem;"></div>
                 </div>
             </div>
+            @if (!isset($user['id']))
             <div class="col-sm-6">
                 <!-- Correo Electrónico -->
                 <div class="mt-4">
                     <x-input-label for="usu_email" :value="__('Correo Electrónico')" />
-                    <x-text-input id="usu_email" class="block mt-1 w-full" type="email" name="usu_email" required />
+                    <x-text-input id="usu_email" class="block mt-1 w-full" type="email" name="usu_email"  value="{{ old('usu_email', $user['email'] ?? '')}}" required />
                     <div class="error-message" id="error-usu_email" style="display: none; color: red; font-size: 0.875rem;"></div>
                 </div>
             </div>
+            @endif
         </div>
 
+        @if (!isset($user['id']))
         <div class="row">
             <!-- Contraseña -->
             <div class="col-sm-6">
@@ -107,12 +129,18 @@
                 </div>
             </div>
         </div>
+        @endif
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button class="ms-4" id="btnRegistrar">
+        <div class="flex items-center mt-4">
+            <a class="ms-4 justify-start" href="{{ route('login') }}">
+                {{ __('Ya estoy registrado.') }}
+            </a>
+
+            <x-primary-button class="ms-4 justify-end" id="btnRegistrar">
                 {{ __('Registrar') }}
             </x-primary-button>
         </div>
+
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

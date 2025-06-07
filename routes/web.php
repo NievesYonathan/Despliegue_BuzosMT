@@ -133,6 +133,7 @@ Route::get('/cargos', [CargoController::class, 'index'])->name('cargos');
 Route::get('/cargos/create', [CargoController::class, 'create'])->name('cargos.create');
 Route::post('/cargos', [CargoController::class, 'store'])->name('cargos.store');
 Route::put('/cargos/{id}', [CargoController::class, 'update'])->name('cargos.update');
+Route::delete('/cargos/{id}', [CargoController::class, 'destroy'])->name('cargos.destroy');
 Route::get('/usuarios', [ListaCargoController::class, 'index'])->name('user-list-cargo2');
 Route::get('/usuarios-cargos', [ListaCargoController::class, 'index'])->name('user-list-cargo');
 Route::post('/usuarios-cargos', [ListaCargoController::class, 'store'])->name('cargosUsuarios.store');

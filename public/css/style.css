@@ -938,3 +938,8 @@ table form {
 .button:hover {
     background-color: #0f3443;
 }
+
+  .linea-derecha {
+    border-right: 2px solid #000; /* Cambia grosor y color */
+    padding-right: 1rem;
+  }

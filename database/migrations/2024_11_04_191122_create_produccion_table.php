@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('pro_fecha_fin')->comment('Atrubuto que identifica la fecha de fin de la producion');
             $table->integer('pro_cantidad')->comment('Atrubuto que identifica la cantidad de la producion');
             $table->integer('pro_etapa')->index('fk_produccion_etapas1_idx')->comment('fk que comunica con la tabla etapas ');
+            $table->string('pro_img', 255)->comment('Se guarda la referencia a la ubicación de la imagen de la producción.');
         });
     }
 

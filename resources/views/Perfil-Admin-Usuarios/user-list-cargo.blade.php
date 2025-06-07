@@ -32,7 +32,7 @@
 				<tbody>
 					@foreach($usuarios as $usuario)
 					<tr class="table-light text-center">
-					<td>{{ optional($usuario->tipo_documento)->tip_doc_descripcion }}</td>
+						<td>{{ $usuario->tipoDocumento->tip_doc_descripcion }}</td>
 						<td>{{ $usuario->num_doc }}</td>
 						<td>{{ $usuario->usu_nombres }}</td>
 						<td>
@@ -60,10 +60,27 @@
 									</div>
 									<div class="modal-body">
 										<div class="form-check form-switch">
-											@foreach($cargos as $cargo)
-											<input class="form-check-input" type="checkbox" name="idCargo[]" value="{{ $cargo['id_cargos'] }}" id="checkbox{{ $cargo['id_cargos'] }}">
-											<label class="form-check-label" for="checkbox{{ $cargo['id_cargos'] }}">{{ $cargo['car_nombre'] }}</label><br>
-											@endforeach
+										@foreach($cargos as $c)
+											@php
+												$checked = false;
+												foreach ($usuario->cargos as $cu) {
+													if ($cu->id_cargos == $c->id_cargos) {
+														$checked = true;
+														break;
+													}
+												}
+											@endphp
+											<input
+												class="form-check-input"
+												type="radio"
+												name="idCargo"
+												value="{{ $c->id_cargos }}"
+												id="checkbox{{ $usuario->num_doc }}_{{ $c->id_cargos }}"
+												@if($checked) checked @endif>
+											<label class="form-check-label" for="checkbox{{ $usuario->num_doc }}_{{ $c->id_cargos }}">
+												{{ $c->car_nombre }}
+											</label><br>
+										@endforeach
 										</div>
 									</div>
 									<div class="modal-footer">

@@ -42,22 +42,27 @@
 
         <br>
 
-        <div class="form-neon mt-20">
+        <div class="form-neon mt-10">
             <legend><i class="fa-regular fa-address-book"></i> &nbsp; Lista de Cargos del Sistema</legend>
-            <!-- Elimina el punto de la lista -->
-            <style>
-                ul {
-                    list-style-type: none;
-                }
-            </style>
-            <ul>
+            <div class="row">
                 @foreach ($cargos as $cargo)
-                    <li>
-                        <i class="fas fa-check-circle"></i> {{ $cargo['car_nombre'] }} 
-                        <button data-bs-toggle="modal" data-bs-target="#updateModal{{ $cargo['id_cargos'] }}">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </button>
-                    </li>
+                    <div class="col-12 col-md-6 mb-2"> {{-- 1 "bloque" por fila en mobile, 2 por fila en md+ --}}
+                        <div class="row align-items-center">
+                            <div class="col-12 col-sm-7">
+                                <i class="fas fa-check-circle"></i> {{ $cargo['car_nombre'] }} 
+                            </div>
+                            <div class="col-12 col-sm-5 d-flex justify-content-sm-end gap-2 mt-1 mt-sm-0">
+                                <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal{{ $cargo['id_cargos'] }}">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <form class="form-eliminar" action="{{ route('cargos.destroy', $cargo->id_cargos) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Modal para editar usuarios -->
                     <div class="modal fade" id="updateModal{{ $cargo['id_cargos'] }}" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -92,7 +97,56 @@
                         </div>
                     </div>
                 @endforeach
-            </ul>
+            </div>
         </div>
     </div>
+
+    {{-- Mostrar error --}}
+    @if ($errors->has('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '{{ $errors->first('error') }}',
+            });
+        </script>
+    @endif
+
+    {{-- Mostrar éxito --}}
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '{{ session('success') }}',
+            });
+        </script>
+    @endif
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const forms = document.querySelectorAll('.form-eliminar');
+
+            forms.forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault(); // evita el envío inmediato
+
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "Esta acción no se puede deshacer",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // solo se envía si se confirma
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
 </x-app-layout>

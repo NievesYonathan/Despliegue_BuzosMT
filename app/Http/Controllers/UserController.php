@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
+use App\Models\TipoDoc;
+use App\Models\Estado;
 
 class UserController extends Controller
 {
@@ -18,19 +21,26 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $response = Http::get("{$this->apiBase}/usuarios");
-            $tiposResponse = Http::get("{$this->apiBase}/tipos-documentos");
-            $estadosResponse = Http::get("{$this->apiBase}/estados");
+            // $response = Http::get("{$this->apiBase}/usuarios");
+            // $tiposResponse = Http::get("{$this->apiBase}/tipos-documentos");
+            // $estadosResponse = Http::get("{$this->apiBase}/estados");
 
-            if (!$response->successful() || !$tiposResponse->successful() || !$estadosResponse->successful()) {
-                throw new \Exception('Error al obtener datos de la API');
-            }
+            // if (!$response->successful() || !$tiposResponse->successful() || !$estadosResponse->successful()) {
+            //     throw new \Exception('Error al obtener datos de la API');
+            // }
 
-            return view('Perfil-Admin-Usuarios.user-list', [
-                'usuarios' => $response->json(),
-                'tiposDocumentos' => $tiposResponse->json(),
-                'estados' => $estadosResponse->json()
-            ]);
+            // return view('Perfil-Admin-Usuarios.user-list', [
+            //     'usuarios' => $response->json(),
+            //     'tiposDocumentos' => $tiposResponse->json(),
+            //     'estados' => $estadosResponse->json()
+            // ]);
+                    // Obtener todos los usuarios
+            $usuarios = User::all();
+            $tiposDocumentos = TipoDoc::all();
+            $estados = Estado::all();
+
+            return view('Perfil-Admin-Usuarios.user-list', compact('usuarios', 'tiposDocumentos', 'estados'));
+
         } catch (\Exception $e) {
             return back()->with('error', 'Error de conexión con el servidor');
         }

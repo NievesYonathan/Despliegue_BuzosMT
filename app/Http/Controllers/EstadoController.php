@@ -21,17 +21,20 @@ class EstadoController extends Controller
     {
         try {
             // Llamada a la API para obtener los estados
-            $response = Http::get("{$this->apiBase}/estados");
+            // $response = Http::get("{$this->apiBase}/estados");
 
             // Verifica si la respuesta fue exitosa
-            if (!$response->successful()) {
-                throw new \Exception('Error al obtener los estados');
-            }
+            // if (!$response->successful()) {
+            //     throw new \Exception('Error al obtener los estados');
+            // }
 
             // Redirige a la vista 'vistaEstados' pasando los estados obtenidos
-            return view('Perfil-Admin-Usuarios.vistaEstados', [
-                'estados' => $response->json()
-            ]);
+            // return view('Perfil-Admin-Usuarios.vistaEstados', [
+            //     'estados' => $response->json()
+            // ]);
+            $estados = Estado::all();
+            return view('Perfil-Admin-Usuarios.vistaEstados', compact('estados'));
+
         } catch (\Exception $e) {
             // En caso de error, redirige hacia la vista con un mensaje de error
             return back()->with('error', 'Error de conexión con el servidor');

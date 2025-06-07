@@ -39,13 +39,13 @@
                 <tbody>
                     @foreach($usuarios as $usuario)
                     <tr class="table-light text-center">
-                        <td>{{ $usuario['tipo_documento']['tip_doc_descripcion'] }}</td>
-                        <td>{{ $usuario['num_doc'] }}</td>
-                        <td>{{ $usuario['usu_nombres'] }}</td>
-                        <td>{{ $usuario['usu_apellidos'] }}</td>
-                        <td>{{ $usuario['usu_telefono'] }}</td>
-                        <td>{{ $usuario['email'] }}</td>
-                        <td>{{ $usuario['estado']['nombre_estado'] }}</td>
+                        <td>{{ $usuario->tipoDocumento->tip_doc_descripcion }}</td>
+                        <td>{{ $usuario->num_doc }}</td>
+                        <td>{{ $usuario->usu_nombres }}</td>
+                        <td>{{ $usuario->usu_apellidos }}</td>
+                        <td>{{ $usuario->usu_telefono }}</td>
+                        <td>{{ $usuario->email }}</td>
+                        <td>{{ $usuario->estado->nombre_estado }}</td>
                         <td>
                             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal{{ $usuario['num_doc'] }}">
                                 <i class="fa-solid fa-user-pen"></i>

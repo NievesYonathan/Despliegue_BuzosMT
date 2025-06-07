@@ -6,7 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
   <script src="https://kit.fontawesome.com/a81368914c.js"></script>
-  <link rel="icon" href="../../assets/img/icon.png" sizes="32x32" type="image/png">
+  <!-- <link rel="icon" href="../../assets/img/icon.png" sizes="32x32" type="image/png"> -->
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ asset('Logo/logo.png') }}">
+
   <link rel="stylesheet" href="{{ asset('css/css-welcome/style.css')}}">
 
 </head>

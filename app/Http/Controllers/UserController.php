@@ -145,7 +145,7 @@ class UserController extends Controller
             $usuario->update([
                 'usu_nombres' => $request->usu_nombres,
                 'usu_apellidos' => $request->usu_apellidos,
-                'usu_email' => $request->usu_email,
+                'email' => $request->email,
                 'usu_telefono' => $request->usu_telefono,
                 'usu_fecha_contratacion' => $request->usu_fecha_contratacion,  // Fecha de contratación
                 'usu_estado' => $request->usu_estado,  // Estado

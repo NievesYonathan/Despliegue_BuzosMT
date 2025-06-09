@@ -23,6 +23,8 @@ class Seguridad extends Model
      */
     public $timestamps = false;
 
+    protected $primaryKey = 'id_seguridad';
+
     /**
      * Los atributos que son asignables en masa.
      *

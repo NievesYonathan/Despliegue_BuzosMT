@@ -112,4 +112,26 @@
                 .catch(error => console.error("Error cargando los datos:", error));
         });
     </script>
+        {{-- Mostrar error --}}
+    @if ($errors->has('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '{{ $errors->first('error') }}',
+            });
+        </script>
+    @endif
+
+    {{-- Mostrar éxito --}}
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '{{ session('success') }}',
+            });
+        </script>
+    @endif
+
 </x-app-layout>

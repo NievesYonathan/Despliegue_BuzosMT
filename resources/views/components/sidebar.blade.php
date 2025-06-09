@@ -5,16 +5,17 @@
         </a>
 
         @php
-        $name = auth()->user()->usu_nombres;
-        $perfil = auth()->user()->cargos()->first()->car_nombre ?? 'Sin Cargo';
-
+            $name = auth()->user()->usu_nombres;
+            $perfil = auth()->user()->cargos()->first()->car_nombre ?? 'Sin Cargo';
         @endphp
 
         <figure class="full-box nav-lateral-avatar">
             <i class="far fa-times-circle show-nav-lateral"></i>
             <img src="{{ asset('storage/' . Auth::user()->imag_perfil) }}" class="img-fluid" alt="Avatar">
             <figcaption class="roboto-medium text-name">
-                {{ $name }} <br><small class="roboto-condensed-light">{{ $perfil }}</small>
+                {{ $name }} 
+                <br>
+                <small class="roboto-condensed-light">{{ $perfil }}</small>
             </figcaption>
         </figure>
 

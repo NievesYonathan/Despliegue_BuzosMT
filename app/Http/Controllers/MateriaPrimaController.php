@@ -16,17 +16,19 @@ class MateriaPrimaController extends Controller
 
         try {
             // Llamar a la API para obtener los datos de materia prima
-            $response = Http::get(config('app.url') . '/api/materia-prima');
+            // $response = Http::get(config('app.url') . '/api/materia-prima');
 
 
-            if ($response->successful()) {
-                $materiaPrima = $response->json(); // Convertir la respuesta JSON en un array
-            }
+            // if ($response->successful()) {
+            //     $materiaPrima = $response->json(); // Convertir la respuesta JSON en un array
+            // }
+            $materiaPrima = MateriaPrima::all();
+            return view("Perfil_Inventario.item-list", compact("materiaPrima"));
+
         } catch (\Exception $e) {
             // Manejar errores sin romper la vista
         }
 
-        return view("Perfil_Inventario.item-list", compact("materiaPrima"));
     }
 
     public function show($id)
@@ -55,7 +57,7 @@ class MateriaPrimaController extends Controller
     {
         $estados = Estado::all();
         $proveedores = User::whereHas('cargos', function ($query) {
-            $query->where('id_cargos', 4);
+            $query->where('id_cargos', 5);
         })->get();
 
         return view("Perfil_Inventario.new-item", compact("estados", "proveedores"));
@@ -74,21 +76,17 @@ class MateriaPrimaController extends Controller
         ]);
 
         try {
-            $response = Http::get(config('app.url') . '/api/materia-prima', [
-                'mat_pri_nombre' => $request->input('nombre'),
-                'mat_pri_descripcion' => $request->input('descripcion'),
-                'mat_pri_unidad_medida' => $request->input('unidad_medida'),
-                'mat_pri_cantidad' => $request->input('cantidad'),
-                'mat_pri_estado' => $request->input('estado'),
-                'fecha_compra_mp' => $request->input('fecha_compra'),
-                'proveedores_id_proveedores' => $request->input('proveedor_id'),
+            MateriaPrima::create([
+                'mat_pri_nombre' => $request->nombre,
+                'mat_pri_descripcion' => $request->descripcion,
+                'mat_pri_unidad_medida' => $request->unidad_medida,
+                'mat_pri_cantidad' => $request->cantidad,
+                'mat_pri_estado' => $request->estado,
+                'fecha_compra_mp' => $request->fecha_compra,
+                'proveedores_id_proveedores' => $request->proveedor_id,
             ]);
 
-            if ($response->successful()) {
-                return redirect()->route('lista-item')->with('success', 'Materia prima creada exitosamente.');
-            } else {
-                return redirect()->back()->with('error', 'Error al crear materia prima: ' . $response->body());
-            }
+            return redirect()->route('lista-item')->with('success', 'Materia prima creada exitosamente.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Excepción: ' . $e->getMessage());
         }
@@ -99,7 +97,7 @@ class MateriaPrimaController extends Controller
         $materiaPrima = MateriaPrima::findOrFail($id);
         $estados = Estado::all();
         $proveedores = User::whereHas('cargos', function ($query) {
-            $query->where('id_cargos', 4);
+            $query->where('id_cargos', 5);
         })->get();
     
         // Devolver la vista explícitamente

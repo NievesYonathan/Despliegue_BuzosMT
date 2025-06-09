@@ -40,7 +40,7 @@
             </div>
             @endif
 
-            <input type="hidden" name="usu_estado" value="1"> <!-- O el valor adecuado para el estado -->
+            <input type="hidden" name="usu_estado" value="1"> 
 
             <fieldset>
                 <legend><i class="far fa-address-card"></i> &nbsp; Información personal</legend>

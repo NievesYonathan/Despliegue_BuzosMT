@@ -12,11 +12,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\ReporteProduccionController;
 use App\Http\Controllers\Api\EtapaController;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Auth\GoogleController;
+
 
 Route::get('/test-email', function () {
     try {
@@ -66,37 +65,8 @@ Route::middleware('auth')->group(function () {
 });
 
 //Rutas para login con Google
-Route::get('/login-google', function () {
-    return Socialite::driver('google')->redirect();
-})->name('login-google');
-
-Route::get('/callback-url', function () {
-    $user = Socialite::driver('google')->user();
-
-    $userExists = User::where('external_id', $user->id)->where('external_auth', 'google')->first();
-
-    if ($userExists) {
-        Auth::login($userExists);
-    } else {
-        // Crear el usuario en la tabla usuarios
-        $userNew = User::create([
-            'num_doc' => $user->num_doc,
-            't_doc' => $user->t_doc,
-            'usu_nombres' => $user->usu_nombres,
-            'usu_apellidos' => $user->usu_apellidos,
-            'email' => $user->email,
-            'usu_fecha_nacimiento' => $user->usu_fecha_nacimiento,
-            'usu_sexo' => $user->usu_sexo,
-            'usu_direccion' => 'NULL',
-            'usu_telefono' => $user->usu_telefono,
-            'usu_estado' => 1,
-            'usu_fecha_contratacion' => now(), // Asignar la fecha de contratación actual
-        ]);
-        Auth::login($userNew);
-    }
-
-    return redirect(route('dashboard', absolute: false));
-});
+Route::get('/login-google', [GoogleController::class, 'redirectToGoogle'])->name('login-google');
+Route::get('/callback-url', [GoogleController::class, 'handleGoogleCallback']);
 
 //rutas de 'perfil-admin-usuario'
 Route::controller(UserController::class)->group(function () {

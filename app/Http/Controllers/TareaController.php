@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Estado;
+use App\Models\Tarea;
 
 class TareaController extends Controller
 {
@@ -19,17 +21,20 @@ class TareaController extends Controller
     public function index()
     {
         try {
-            $tareas = Http::get("{$this->apiBase}/tareas");
-            $estados = Http::get("{$this->apiBase}/estados");
+            // $tareas = Http::get("{$this->apiBase}/tareas");
+            // $estados = Http::get("{$this->apiBase}/estados");
 
-            if (!$tareas->successful() || !$estados->successful()) {
-                throw new \Exception("Error al obtener datos");
-            }
+            // if (!$tareas->successful() || !$estados->successful()) {
+            //     throw new \Exception("Error al obtener datos");
+            // }
 
-            return view('Perfil_Produccion.nueva_tarea', [
-                'tareas' => $tareas->json(),
-                'estados' => $estados->json(),
-            ]);
+            // return view('Perfil_Produccion.nueva_tarea', [
+            //     'tareas' => $tareas->json(),
+            //     'estados' => $estados->json(),
+            // ]);
+            $tareas = Tarea::with('estados')->get();
+            $estados = Estado::all();
+            return view('Perfil_Produccion.nueva_tarea', compact('tareas', 'estados'));
         } catch (\Exception $e) {
             return back()->with('error', 'Error de conexión con el servidor');
         }
@@ -38,13 +43,31 @@ class TareaController extends Controller
     public function store(Request $request)
     {
         try {
-            $response = Http::post("{$this->apiBase}/tareas", $request->all());
+            // $response = Http::post("{$this->apiBase}/tareas", $request->all());
 
-            if ($response->successful()) {
-                return redirect()->route('pro_tareas')->with('success', 'Tarea creada exitosamente.');
+            // if ($response->successful()) {
+            //     return redirect()->route('pro_tareas')->with('success', 'Tarea creada exitosamente.');
+            // }
+
+            // return back()->with('error', 'Error al crear tarea');
+            
+            // Validar datos
+            $request->validate([
+                'tar_nombre' => 'required|string|max:50',
+                'tar_descripcion' => 'required|string|max:200',
+            ]);
+
+            try {
+                Tarea::create([
+                    'tar_nombre' => $request->tar_nombre,
+                    'tar_descripcion' => $request->tar_descripcion,
+                    'tar_estado' => 1
+                ]);
+            } catch (\Exception $e) {
+                return back()->with('error', 'Ocurrió un problema al crear la tarea.');
             }
 
-            return back()->with('error', 'Error al crear tarea');
+            return redirect()->route('pro_tareas')->with('success', 'Tarea creada exitosamente.');
         } catch (\Exception $e) {
             return back()->with('error', 'Error de conexión con el servidor');
         }
@@ -53,13 +76,24 @@ class TareaController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $response = Http::put("{$this->apiBase}/tareas/{$id}", $request->all());
+            // Validar datos
+            $request->validate([
+                'tar_nombre' => 'string|max:50',
+                'tar_descripcion' => 'string|max:200',
+                'tar_estado' => 'numeric'
+            ]);
 
-            if ($response->successful()) {
-                return redirect()->back()->with('success', 'Tarea actualizada exitosamente.');
-            }
+            // Buscar la tarea a actualizar
+            $tarea = Tarea::findOrFail($id);
 
-            return back()->with('error', 'Error al actualizar la tarea');
+            // Actualizar los campos
+            $tarea->update([
+                'tar_nombre' => $request->tar_nombre,
+                'tar_descripcion' => $request->tar_descripcion,
+                'tar_estado' => $request->tar_estado
+            ]);
+
+            return redirect()->back();
         } catch (\Exception $e) {
             return back()->with('error', 'Error de conexión con el servidor');
         }

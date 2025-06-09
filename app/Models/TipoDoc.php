@@ -14,4 +14,10 @@ class TipoDoc extends Model
     protected $fillable = ['tip_doc_descripcion']; // Campo que recibirá el nombre del tipo de documento
 
     public $timestamps = false;
+
+    public function usuarios()
+    {
+        return $this->hasMany(User::class, 't_doc', 'id_tipo_documento');
+    }
+
 }

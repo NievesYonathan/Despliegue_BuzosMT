@@ -69,12 +69,12 @@
                 <tbody>
                     @if($resultado && count($resultado) > 0)
                     @foreach($resultado as $row)
-                    <tr>
-                        <td class="text-center">{{ $row['tipo_documento']['tip_doc_descripcion'] }}</td>
+                    <tr class="table-light text-center">
+                        <td class="text-center">{{ $row->tipoDocumento->tip_doc_descripcion }}</td>
                         <td class="text-center">{{ $row['num_doc'] }}</td>
                         <td>{{ $row['usu_nombres'] }}</td>
                         <td class="text-center">{{ $row['usu_apellidos'] }}</td>
-                        <td>{{ $row['usu_fecha_nacimiento'] }}</td>
+                        <td>{{ $row['usu_fecha_nacimiento']->format('Y-m-d') }}</td>
                         <td>{{ $row['usu_sexo'] }}</td>
                         <td>{{ $row['usu_telefono'] }}</td>
                         <td>{{ $row['email'] }}</td>

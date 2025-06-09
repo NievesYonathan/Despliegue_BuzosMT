@@ -21,6 +21,18 @@
 
     <!-- Content -->
     <div class="container-fluid">
+                <!-- Mostrar mensaje de alerta si existe -->
+        @if(session('alerta'))
+        <div id="alerta" class="alert alert-info" role="alert" style="position: fixed; top: 20px; left: 20px; padding: 15px; border: 1px solid #12464c; border-radius: 8px; background-color: #12464c; color: white; z-index: 9999;">
+            {{ session('alerta') }}
+        </div>
+
+        <script>
+            setTimeout(function() {
+                document.getElementById("alerta").style.display = 'none';
+            }, 4000);
+        </script>
+        @endif
         <div class="table-responsive">
             <table class="table table-dark table-sm">
                 <thead>

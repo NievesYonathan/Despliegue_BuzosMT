@@ -1,6 +1,8 @@
 <x-guest-layout>
     @php
-            $fullName = $user['name'] ?? '';
+        $googleUser = session('user');
+        
+        $fullName = $user['name'] ?? '';
         $parts = explode(' ', trim($fullName));
 
         // Si hay al menos 3 partes, suponemos que los 2 primeros son nombres
@@ -97,7 +99,6 @@
                     <div class="error-message" id="error-usu_telefono" style="display: none; color: red; font-size: 0.875rem;"></div>
                 </div>
             </div>
-            @if (!isset($user['id']))
             <div class="col-sm-6">
                 <!-- Correo Electrónico -->
                 <div class="mt-4">
@@ -106,10 +107,8 @@
                     <div class="error-message" id="error-usu_email" style="display: none; color: red; font-size: 0.875rem;"></div>
                 </div>
             </div>
-            @endif
         </div>
 
-        @if (!isset($user['id']))
         <div class="row">
             <!-- Contraseña -->
             <div class="col-sm-6">
@@ -129,7 +128,6 @@
                 </div>
             </div>
         </div>
-        @endif
 
         <div class="flex items-center mt-4">
             <a class="ms-4 justify-start" href="{{ route('login') }}">

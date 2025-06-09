@@ -42,7 +42,7 @@
 
         <br>
 
-        <div class="form-neon mt-10">
+        <div class="form-neon mt-1">
             <legend><i class="fa-regular fa-address-book"></i> &nbsp; Lista de Cargos del Sistema</legend>
             <div class="row">
                 @foreach ($cargos as $cargo)

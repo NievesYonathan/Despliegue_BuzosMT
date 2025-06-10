@@ -23,7 +23,10 @@ class CargoApiController extends Controller
             'car_nombre' => $request->car_nombre,
         ]);
 
-        return response()->json($cargo, 201);
+        return response()->json([
+            'status' => 201,
+            'cargo' => $cargo
+        ], 201);
     }
 
     public function update(Request $request, $id)
@@ -34,6 +37,23 @@ class CargoApiController extends Controller
             'car_nombre' => $request->car_nombre,
         ]);
 
-        return response()->json($cargo, 200);
+        return response()->json([
+            'message' => 'Cargo actualizado correctamente',
+            'cargo' => $cargo
+        ], 200);
     }
+
+    // Eliminar un cargo
+    public function destroy($id_cargo)
+    {
+        $cargo = Cargo::find($id_cargo);
+
+        if (!$cargo) {
+            return response()->json(['message' => 'Cargo no encontrado'], 404); // 404 Not Found
+        }
+
+        $cargo->delete();
+
+        return response()->json(['message' => 'Cargo eliminado correctamente'], 200); // 200 OK
+    }    
 }

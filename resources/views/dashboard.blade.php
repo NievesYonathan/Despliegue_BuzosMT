@@ -49,14 +49,14 @@
                 </a>
             </div>
 
-            <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 tile-container">
+            <!-- <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 tile-container">
                 <a href="#" class="tile">
                     <div class="tile-tittle">Informes</div>
                     <div class="tile-icon">
                         <i class="fa-solid fa-file-circle-plus"></i>
                     </div>
                 </a>
-            </div>
+            </div> -->
 
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 tile-container">
                 <a href="{{ route('perfil-produccion.etapas') }}" class="tile">
@@ -70,7 +70,7 @@
         
         @if ($perfil === 'Jefe Inventario')
             <div class="col-sm-12 col-md-4 tile-container">
-                <a href="#" class="tile">
+                <a href="{{ route('lista-item')}}" class="tile">
                     <div class="tile-tittle">Materia Prima</div>
                     <div class="tile-icon">
                         <i class="fas fa-pallet fa-fw"></i>

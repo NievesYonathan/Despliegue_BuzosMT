@@ -11,14 +11,38 @@
                         <th>ELIMINAR</th>
                     </tr>
                 </thead>
-                <tbody id="materiaPrimaTable">
-                    <!-- Los datos se insertarán dinámicamente -->
-                </tbody>
+<tbody id="materiaPrimaTable">
+    @forelse ($materiaPrima as $index => $item)
+        <tr class="text-center align-middle table-light">
+            <td>{{ $index + 1 }}</td>
+            <td>{{ $item->mat_pri_nombre }}</td>
+            <td>{{ $item->mat_pri_cantidad }} {{ $item->mat_pri_unidad_medida }}</td>
+            <td>
+                <a href="{{ route('editar-producto', $item->id_materia_prima) }}" class="btn btn-sm btn-warning">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+            </td>
+            <td>
+                <form class="form-eliminar" action="{{ route('eliminar.matPrima', $item->id_materia_prima) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="5" class="text-center">No hay materias primas registradas.</td>
+        </tr>
+    @endforelse
+</tbody>
             </table>
         </div>
     </div>
 
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             fetch("http://localhost:8000/api/materia-prima")
                 .then(response => response.json())
@@ -111,7 +135,7 @@
                 })
                 .catch(error => console.error("Error cargando los datos:", error));
         });
-    </script>
+    </script> -->
         {{-- Mostrar error --}}
     @if ($errors->has('error'))
         <script>
@@ -133,5 +157,30 @@
             });
         </script>
     @endif
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const forms = document.querySelectorAll('.form-eliminar');
 
+            forms.forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault(); // evita el envío inmediato
+
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "Esta acción no se puede deshacer",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // solo se envía si se confirma
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

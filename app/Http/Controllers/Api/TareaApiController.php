@@ -13,7 +13,8 @@ class TareaApiController extends Controller
 {
     public function index()
     {
-        return response()->json(Tarea::with('estados')->get());
+        //return response()->json(Tarea::with('estados')->get());
+        return response()->json(Tarea::all(), 200);
     }
 
     public function store(Request $request)
@@ -43,7 +44,10 @@ class TareaApiController extends Controller
         $tarea = Tarea::findOrFail($id);
         $tarea->update($request->all());
 
-        return response()->json(['message' => 'Tarea actualizada']);
+        return response()->json([
+            'message' => 'Tarea actualizada correctamente',
+            'tarea' => $tarea
+        ], 200);
     }
 
     public function show($id)
@@ -51,6 +55,19 @@ class TareaApiController extends Controller
         $tarea = Tarea::with('estados')->findOrFail($id);
         return response()->json($tarea);
     }
+
+    public function destroy($id_tarea)
+    {
+        $tarea = Tarea::find($id_tarea);
+
+        if (!$tarea) {
+            return response()->json(['message' => 'tarea no encontrado'], 404); // 404 Not Found
+        }
+
+        $tarea->delete();
+
+        return response()->json(['message' => 'Tarea eliminada correctamente'], 200); // 200 OK
+    }    
 
     public function tareasAsignadas(Request $request)
     {

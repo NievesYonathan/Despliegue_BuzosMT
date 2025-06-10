@@ -58,6 +58,7 @@ Route::post('/etapas', [EtapaController::class, 'store']); // Crear una nueva et
 Route::get('/etapas/{id}', [EtapaController::class, 'show']); // Obtener una etapa por ID
 Route::put('/etapas/{id}', [EtapaController::class, 'update']); // Actualizar una etapa
 Route::delete('/etapas/{id}', [EtapaController::class, 'destroy']); // Eliminar una etapa
+
 Route::put('/materia-prima-editar/{id}', [MateriaPrimaController::class, 'update'])->name('update-producto');
 
 // API materia prima
@@ -78,6 +79,7 @@ Route::controller(UserApiController::class)->group(function () {
 Route::get('/tipos-documentos', [TipoDocApiController::class, 'index']);
 Route::post('/tipos-documentos', [TipoDocApiController::class, 'store']);
 Route::put('/tipos-documentos/{id}', [TipoDocApiController::class, 'update']);
+Route::delete('/tipos-documentos/{id}', [TipoDocApiController::class, 'destroy']);
 
 
 //estados
@@ -92,14 +94,17 @@ Route::prefix('estados')->group(function () {
 Route::get('/cargos', [CargoApiController::class, 'index']);
 Route::post('/cargos', [CargoApiController::class, 'store']);
 Route::put('/cargos/{id}', [CargoApiController::class, 'update']);
+Route::delete('/cargos-eliminar/{id}', [CargoApiController::class, 'destroy']);
 Route::get('/usuarios-cargos', [ListaCargoApiController::class, 'index']);
 Route::post('/usuarios-cargos', [ListaCargoApiController::class, 'store']);
 
 
 //tareas
 Route::get('/tareas', [TareaApiController::class, 'index']); // Mostrar todas las tareas
+Route::get('/tareas/{id}', [TareaApiController::class, 'show']); // Mostrar una tarea
 Route::post('/tareas', [TareaApiController::class, 'store']); // Crear tarea
 Route::put('/tareas/{id}', [TareaApiController::class, 'update']); // Actualizar tarea
+Route::delete('/tareas/{id}', [TareaApiController::class, 'destroy']); // Elimianar tarea
 
 // Rutas de tareas asignadas a un operario
 Route::get('/tareas-asignadas', [TareaApiController::class, 'tareasAsignadas']);

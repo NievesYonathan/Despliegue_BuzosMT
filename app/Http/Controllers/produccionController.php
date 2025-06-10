@@ -25,7 +25,7 @@ class produccionController extends Controller
         $materiasPrimas1 = MateriaPrima::all();
 
         $operarios = User::whereHas('cargos', function ($query) {
-            $query->where('id_cargos', 3);
+            $query->where('id_cargos', 4);
         })->get();
 
         return view('Perfil_Produccion.pro_fabricados', compact('producciones', 'todasTareas', 'operarios', 'etapas', 'materiasPrimas1'));
@@ -42,7 +42,7 @@ class produccionController extends Controller
         $materiasPrimas1 = MateriaPrima::all();
 
         $operarios = User::whereHas('cargos', function ($query) {
-            $query->where('id_cargos', 3);
+            $query->where('id_cargos', 4);
         })->get();
 
         return view('Perfil_Produccion.produccion', compact('producciones', 'etapas', 'operarios', 'todasTareas', 'materiasPrimas1'));

@@ -15,6 +15,7 @@
             <div class="form-group mb-3">
                 <label for="estadoTarea">Estado</label>
                 <select class="form-control" name="estadoTarea" required>
+                    <option value="#">Cambiar Estado</option>
                     @foreach ($estados as $estado)
                         <option value="{{ $estado['id_estados'] }}"
                         @if ($estado['id_estados'] == $empleadoTarea['emp_tar_estado_tarea']) selected @endif>

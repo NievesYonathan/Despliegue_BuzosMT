@@ -29,7 +29,10 @@ class EtapaController extends Controller
             'eta_descripcion' => $request->eta_descripcion,
         ]);
 
-        return response()->json($etapa, 201);
+        return response()->json([
+            'message' => 'Etapa creada correctamente',
+            'etapa' => $etapa
+        ], 201);
     }
 
     // Obtener una etapa por ID
@@ -62,22 +65,25 @@ class EtapaController extends Controller
             'eta_descripcion' => $request->eta_descripcion,
         ]);
 
-        return response()->json($etapa);
+        return response()->json([
+            'message' => 'Etapa actualizada correctamente',
+            'etapa' => $etapa
+        ], 200);
     }
 
     // Eliminar una etapa
     public function destroy($id)
-{
-    $etapa = Etapas::find($id);
+    {
+        $etapa = Etapas::find($id);
 
-    if (!$etapa) {
-        return response()->json(['message' => 'Etapa no encontrada'], 404);
+        if (!$etapa) {
+            return response()->json(['message' => 'Etapa no encontrada'], 404);
+        }
+
+        $etapa->delete();
+
+        return response()->json(['message' => 'Etapa eliminada correctamente'], 200); // 200 OK
     }
-
-    $etapa->delete();
-
-    return redirect()->route('perfil-produccion.etapas')->with('success', 'Etapa eliminada exitosamente.');
-}
 
     // Mostrar la vista con todas las etapass
     public function indexView()

@@ -40,4 +40,17 @@ class TipoDocApiController extends Controller
 
         return response()->json(['message' => 'Tipo de documento actualizado', 'data' => $tipoDoc]);
     }
+
+    public function destroy($tipoDoc)
+    {
+        $tipoDoc = TipoDoc::find($tipoDoc);
+
+        if (!$tipoDoc) {
+            return response()->json(['message' => 'tipoDoc no encontrado'], 404); // 404 Not Found
+        }
+
+        $tipoDoc->delete();
+
+        return response()->json(['message' => 'tipoDoc eliminado correctamente'], 200); // 200 OK
+    }    
 }

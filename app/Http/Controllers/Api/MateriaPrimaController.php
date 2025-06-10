@@ -12,8 +12,10 @@ class MateriaPrimaController extends Controller
     // Obtener todos los registros
     public function index()
     {
-        $datos = MateriaPrima::all();
-        return response()->json($datos, 200);
+        $materiasPrimas = MateriaPrima::all();
+        return response()->json([
+            'materias_primas' => $materiasPrimas
+        ]);
     }
 
     // Crear un nuevo registro
@@ -57,7 +59,7 @@ class MateriaPrimaController extends Controller
         }
 
         $data = [
-            'Materia Prima' => $materiaPrima,
+            'materia_prima' => $materiaPrima,
             'status' => 201
         ];
 
@@ -80,11 +82,14 @@ class MateriaPrimaController extends Controller
     // Obtener un solo registro
     public function show($id)
     {
-        $dato = MateriaPrima::find($id);
-        if (!$dato) {
+        $materia = MateriaPrima::find($id);
+        if (!$materia) {
             return response()->json(['message' => 'Registro no encontrado'], 404);
         }
-        return response()->json($dato, 200);
+        return response()->json([
+            'materia_prima' => $materia,
+            'status' => 200
+        ]);
     }
 
     // Actualizar un registro
@@ -146,6 +151,6 @@ class MateriaPrimaController extends Controller
         }
 
         $dato->delete();
-        return response()->json(['message' => 'Registro eliminado'], 200);
+        return response()->json(['message' => 'Materia prima eliminada correctamente'], 200);
     }
 }

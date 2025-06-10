@@ -63,7 +63,8 @@ class UserApiController extends Controller
             ]);
 
             DB::commit();
-            return response()->json(['message' => 'Usuario creado exitosamente', 'user' => $user]);
+
+            return response()->json(['message' => 'Usuario creado correctamente', 'usuario' => $user], 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);

@@ -12,8 +12,6 @@ class MateriaPrimaController extends Controller
 {
     public function index()
     {
-        $materiaPrima = []; // Inicializar la variable para evitar errores
-
         try {
             // Llamar a la API para obtener los datos de materia prima
             // $response = Http::get(config('app.url') . '/api/materia-prima');
@@ -107,14 +105,18 @@ class MateriaPrimaController extends Controller
     public function delete($id)
     {
         try {
-            // Enviar solicitud DELETE a la API
-            $response = Http::delete(config('app.url') . "/api/materia-prima/{$id}");
-
-            if ($response->successful()) {
-                return redirect()->route('lista-item')->with('success', 'Materia prima eliminada correctamente.');
+            $materiaPrima = MateriaPrima::findOrFail($id);
+                
+            // Verificar si el cargo está asignado a usuarios
+            if ($materiaPrima->produccion()->exists()) {
+                return back()->withErrors(['error' => 'No se puede eliminar la Materia Prima porque está asignado a producciones.']);
             }
+            
+            $materiaPrima->delete();
+
+            return redirect()->route('lista-item')->with('success', 'Materia Prima& eliminada correctamente');
         } catch (\Exception $e) {
-            return redirect()->route('lista-item')->with('error', 'Error al eliminar materia prima.');
+            return back()->withErrors(['error' => 'No se pudo eliminar la Materia Prima.']);
         }
     }
 }

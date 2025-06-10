@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Estado;
 use App\Models\Tarea;
+use App\Models\EmpTarea;
 
 class TareaController extends Controller
 {
@@ -102,21 +103,36 @@ class TareaController extends Controller
     public function tareasAsignadas()
     {
         try {
+            // $userId = Auth::user()->num_doc;
+
+            // $response = Http::get("{$this->apiBase}/tareas-asignadas", [
+            //     'num_doc' => $userId
+            // ]);
+
+            // if ($response->successful()) {
+            //     $data = $response->json();
+            //     return view('Perfil-Operario.tareasAsignadas', [
+            //         'tareasAsignadas' => $data['tareasAsignadas'] ?? [],
+            //         'estados' => $data['estados'] ?? []
+            //     ]);
+            // }
+
+            // return back()->with('error', 'Error al obtener tareas asignadas');
+
             $userId = Auth::user()->num_doc;
 
-            $response = Http::get("{$this->apiBase}/tareas-asignadas", [
-                'num_doc' => $userId
-            ]);
+            // Consulta las tareas relacionadas al usuario autenticado
+            $tareasAsignadas = Tarea::whereHas('empleados', function ($query) use ($userId) {
+                $query->where('empleados_num_doc', $userId); // Filtra por el usuario autenticado
+            })
+            ->with(['empleados' => function($query) use ($userId) {
+                $query->where('empleados_num_doc', $userId); 
+            }])
+            ->get();
 
-            if ($response->successful()) {
-                $data = $response->json();
-                return view('Perfil-Operario.tareasAsignadas', [
-                    'tareasAsignadas' => $data['tareasAsignadas'] ?? [],
-                    'estados' => $data['estados'] ?? []
-                ]);
-            }
+            $estados = Estado::all();
 
-            return back()->with('error', 'Error al obtener tareas asignadas');
+            return view('Perfil-Operario.tareasAsignadas', compact('tareasAsignadas', 'estados'));
         } catch (\Exception $e) {
             return back()->with('error', 'Error de conexión con el servidor');
         }
@@ -126,14 +142,21 @@ class TareaController extends Controller
     public function editarEstado($id_tarea, $id_empleado_tarea)
     {
         try {
-            $response = Http::get("{$this->apiBase}/tareas/estado/{$id_tarea}/{$id_empleado_tarea}");
+            // $response = Http::get("{$this->apiBase}/tareas/estado/{$id_tarea}/{$id_empleado_tarea}");
 
-            if ($response->successful()) {
-                $data = $response->json();
-                return view('Perfil-Operario.editarEstado', $data);
-            }
+            // if ($response->successful()) {
+            //     $data = $response->json();
+            //     return view('Perfil-Operario.editarEstado', $data);
+            // }
 
-            return back()->with('error', 'Error al cargar la tarea');
+            // return back()->with('error', 'Error al cargar la tarea');
+
+        // Cargar la tarea y empleado correspondiente
+        $tarea = Tarea::findOrFail($id_tarea);
+        $empleadoTarea = EmpTarea::findOrFail($id_empleado_tarea);
+        $estados = Estado::whereIn('id_estados', [3, 4])->get();
+
+        return view('Perfil-Operario.editarEstado', compact('tarea', 'empleadoTarea', 'estados'));
         } catch (\Exception $e) {
             return back()->with('error', 'Error de conexión con el servidor');
         }
@@ -142,18 +165,29 @@ class TareaController extends Controller
     public function actualizarEstado(Request $request, $id_tarea, $id_empleado_tarea)
     {
         try {
-            $response = Http::put("{$this->apiBase}/tareas/estado/{$id_empleado_tarea}", [
-                'estadoTarea' => $request->estadoTarea
+            // $response = Http::put("{$this->apiBase}/tareas/estado/{$id_empleado_tarea}", [
+            //     'estadoTarea' => $request->estadoTarea
+            // ]);
+
+            // if ($response->successful()) {
+            //     return redirect()->route('tarea.editar', [
+            //         'id_tarea' => $id_tarea,
+            //         'id_empleado_tarea' => $id_empleado_tarea
+            //     ])->with('success', 'Estado actualizado correctamente');
+            // }
+
+            // return back()->with('error', 'Error al actualizar estado');
+
+            $request->validate([
+                'estadoTarea' => 'required|numeric',
             ]);
 
-            if ($response->successful()) {
-                return redirect()->route('tarea.editar', [
-                    'id_tarea' => $id_tarea,
-                    'id_empleado_tarea' => $id_empleado_tarea
-                ])->with('success', 'Estado actualizado correctamente');
-            }
+            // Actualizar el estado de la tarea para el empleado
+            $empleadoTarea = EmpTarea::findOrFail($id_empleado_tarea);
+            $empleadoTarea->emp_tar_estado_tarea = $request->estadoTarea;
+            $empleadoTarea->save();
 
-            return back()->with('error', 'Error al actualizar estado');
+            return redirect()->route('tarea.editar', ['id_tarea' => $id_tarea, 'id_empleado_tarea' => $id_empleado_tarea])->with('success', 'Estado actualizado correctamente');
         } catch (\Exception $e) {
             return back()->with('error', 'Error de conexión con el servidor');
         }

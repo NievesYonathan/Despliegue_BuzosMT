@@ -156,6 +156,7 @@ Route::post('/materia-prima-resultados', [MateriaPrimaController::class, 'search
 Route::post('/materia-prima-editar/{id}', [MateriaPrimaController::class, 'edit'])->name('editar-producto');
 Route::get('/materia-prima-editar/{id}', [MateriaPrimaController::class, 'edit'])->name('editar-producto-get');
 Route::get('/reporte-produccion', [ReporteProduccionController::class, 'index'])->name('reportes');
+Route::delete('/materia-prima-eliminar/{id}', [MateriaPrimaController::class, 'delete'])->name('eliminar.matPrima');
 
 // Rutas para Tipos de Documento
 Route::controller(TipoDocController::class)->group(function () {

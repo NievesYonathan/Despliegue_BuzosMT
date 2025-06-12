@@ -11,8 +11,9 @@ use App\Models\RegProMateriaPrima;
 use App\Models\Tarea;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Constantes\Mensajes;
 
-class produccionController extends Controller
+class ProduccionController extends Controller
 {
     public function index()
     {
@@ -52,15 +53,15 @@ class produccionController extends Controller
     {
         // Validar los datos de entrada
         $request->validate([
-            'produccion_nombre' => 'required|string|max:50',
-            'produccion_fecha_fin' => 'required|date',
+            'produccion_nombre' => Mensajes::REQUIRED_STRING_50,
+            'produccion_fecha_fin' => Mensajes::REQUIRED_DATE,
             'produccion_cantidad' => 'required|numeric',
             'produccion_etapa' => 'required|exists:etapas,id_etapas',
             'produccion_mtPrima.*' => 'exists:materia_prima,id_materia_prima',
             'mtPrima_cantidad.*' => 'required|numeric|min:1',
             'produccion_tarea.*' => 'exists:tarea,id_tarea',
             'produccion_responsable.*' => 'exists:usuarios,num_doc',
-            'produccion_fecha_entrega.*' => 'required|date',
+            'produccion_fecha_entrega.*' => Mensajes::REQUIRED_DATE,
         ]);
     
         // Buscar la producción que se va a actualizar
@@ -142,11 +143,11 @@ class produccionController extends Controller
     {
         // Validación de datos
         $request->validate([
-            'produccion_nombre' => 'required|string|max:50',
-            'produccion_fecha_inicio' => 'required|date',
+            'produccion_nombre' => Mensajes::REQUIRED_STRING_50,
+            'produccion_fecha_inicio' => Mensajes::REQUIRED_DATE,
             'produccion_fecha_fin' => 'required|date|after_or_equal:produccion_fecha_inicio',
             'produccion_cantidad' => 'required|integer|min:1',
-            'produccion_etapa' => 'required|string|max:50',
+            'produccion_etapa' => Mensajes::REQUIRED_STRING_50,
             'produccion_mtPrima.*' => 'required|integer|exists:materia_prima,id_materia_prima',
             'mtPrima_cantidad.*' => 'required|integer|min:1',
             'produccion_tarea.*' => 'required|integer|exists:tarea,id_tarea',

@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\EtapaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Constantes\Mensajes;
 
 
 Route::get('/test-email', function () {
@@ -59,9 +60,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get(Mensajes::PROFILE_URL, [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put(Mensajes::PROFILE_URL, [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete(Mensajes::PROFILE_URL, [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 //Rutas para login con Google
@@ -110,29 +111,29 @@ Route::post('/usuarios-cargos', [ListaCargoController::class, 'store'])->name('c
 
 // Rutas de 'Perfil de Producción'
 Route::middleware('auth')->group(function () {
-    Route::get('/produccion', [produccionController::class, 'indexTwo'])->name('produccion');
-    Route::put('/produccion/{id}', [produccionController::class, 'update'])->name('update_produccion');
-    Route::get('/productos-fabricados', [produccionController::class, 'index'])->name('pro_fabricados');
-    Route::post('/productos-formulario', [produccionController::class, 'store'])->name('nuevo-producto');
+    Route::get('/produccion', [ProduccionController::class, 'indexTwo'])->name('produccion');
+    Route::put('/produccion/{id}', [ProduccionController::class, 'update'])->name('update_produccion');
+    Route::get('/productos-fabricados', [ProduccionController::class, 'index'])->name('pro_fabricados');
+    Route::post('/productos-formulario', [ProduccionController::class, 'store'])->name('nuevo-producto');
 });
 
 // Rutas para las vistas
-Route::get('/perfil-produccion/etapas', [EtapaController::class, 'indexView'])->name('perfil-produccion.etapas'); // Mostrar etapas
-Route::post('/perfil-produccion/etapas', [EtapaController::class, 'storeFromView'])->name('perfil-produccion.etapas.store'); // Crear nueva etapa
+Route::get(Mensajes::PRO_ETAPAS_URL, [EtapaController::class, 'indexView'])->name('perfil-produccion.etapas'); // Mostrar etapas
+Route::post(Mensajes::PRO_ETAPAS_URL, [EtapaController::class, 'storeFromView'])->name('perfil-produccion.etapas.store'); // Crear nueva etapa
 Route::get('/perfil-produccion/etapas/{id}/edit', [EtapaController::class, 'updateView'])->name('perfil-produccion.etapas.edit'); // Editar etapa
-Route::put('/perfil-produccion/etapas/{id}', [EtapaController::class, 'updateFromView'])->name('perfil-produccion.etapas.update'); // Actualizar etapa
-Route::delete('/perfil-produccion/etapas/{id}', [EtapaController::class, 'destroy'])->name('perfil-produccion.etapas.destroy'); //para eliminar :)
+Route::put(Mensajes::PRO_ETAPAS_URL_ID, [EtapaController::class, 'updateFromView'])->name('perfil-produccion.etapas.update'); // Actualizar etapa
+Route::delete(Mensajes::PRO_ETAPAS_URL_ID, [EtapaController::class, 'destroy'])->name('perfil-produccion.etapas.destroy'); //para eliminar :)
 //Rutas de 'Tarea'
 Route::post('/tareas-crear', [TareaController::class, 'store'])->name('nueva_tarea');
 Route::get('/tareas-produccion', [TareaController::class, 'index'])->name('pro_tareas');
 Route::put('/tarea-actualizar/{id}', [TareaController::class, 'update'])->name('update_tarea');
 
 // Rutas para las vistas
-Route::get('/perfil-produccion/etapas', [EtapaController::class, 'indexView'])->name('perfil-produccion.etapas'); // Mostrar etapas
-Route::post('/perfil-produccion/etapas', [EtapaController::class, 'storeFromView'])->name('perfil-produccion.etapas.store'); // Crear nueva etapa
+Route::get(Mensajes::PRO_ETAPAS_URL, [EtapaController::class, 'indexView'])->name('perfil-produccion.etapas'); // Mostrar etapas
+Route::post(Mensajes::PRO_ETAPAS_URL, [EtapaController::class, 'storeFromView'])->name('perfil-produccion.etapas.store'); // Crear nueva etapa
 Route::get('/perfil-produccion/etapas/{id}/edit', [EtapaController::class, 'updateView'])->name('perfil-produccion.etapas.edit'); // Editar etapa
-Route::put('/perfil-produccion/etapas/{id}', [EtapaController::class, 'updateFromView'])->name('perfil-produccion.etapas.update'); // Actualizar etapa
-Route::delete('/perfil-produccion/etapas/{id}', [EtapaController::class, 'destroy'])->name('perfil-produccion.etapas.destroy'); //para eliminar :)
+Route::put(Mensajes::PRO_ETAPAS_URL_ID, [EtapaController::class, 'updateFromView'])->name('perfil-produccion.etapas.update'); // Actualizar etapa
+Route::delete(Mensajes::PRO_ETAPAS_URL_ID, [EtapaController::class, 'destroy'])->name('perfil-produccion.etapas.destroy'); //para eliminar :)
 
 //Rutas de 'Tarea'
 Route::post('/tareas-crear', [TareaController::class, 'store'])->name('nueva_tarea');

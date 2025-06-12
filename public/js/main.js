@@ -3,8 +3,8 @@ $(document).ready(function () {
 	/*  Show/Hidden Submenus */
 	$('.nav-btn-submenu').on('click', function (e) {
 		e.preventDefault();
-		var SubMenu = $(this).next('ul');
-		var iconBtn = $(this).children('.fa-chevron-down');
+		let SubMenu = $(this).next('ul');
+		let iconBtn = $(this).children('.fa-chevron-down');
 		if (SubMenu.hasClass('show-nav-lateral-submenu')) {
 			$(this).removeClass('active');
 			iconBtn.removeClass('fa-rotate-180');
@@ -19,8 +19,8 @@ $(document).ready(function () {
 	/*  Show/Hidden Nav Lateral */
 	$('.show-nav-lateral').on('click', function (e) {
 		e.preventDefault();
-		var NavLateral = $('.nav-lateral');
-		var PageConten = $('.page-content');
+		let NavLateral = $('.nav-lateral');
+		let PageConten = $('.page-content');
 		if (NavLateral.hasClass('active')) {
 			NavLateral.removeClass('active');
 			PageConten.removeClass('active');

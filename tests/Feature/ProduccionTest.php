@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Produccion;
+use App\Constantes\Mensajes;
+
 
 class ProduccionTest extends TestCase
 {
@@ -36,7 +38,7 @@ class ProduccionTest extends TestCase
     public function test_crear_una_produccion()
     {
         $payload = [
-            'pro_nombre' => 'Buzo Deportivo3',
+            'pro_nombre' => Mensajes::BUZO,
             'pro_fecha_inicio' => '2025-05-20',
             'pro_fecha_fin' => '2025-05-25',
             'pro_cantidad' => 300,
@@ -49,12 +51,12 @@ class ProduccionTest extends TestCase
                  ->assertJson([
                      'status' => 201,
                      'producto' => [
-                         'pro_nombre' => 'Buzo Deportivo3'
+                         'pro_nombre' => Mensajes::BUZO
                      ]
                  ]);
 
         $this->assertDatabaseHas('produccion', [
-            'pro_nombre' => 'Buzo Deportivo3'
+            'pro_nombre' => Mensajes::BUZO
         ]);
     }
 

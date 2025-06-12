@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\MateriaPrima;
+use App\Constantes\Mensajes;
+
 
 class MateriaPrimaTest extends TestCase
 {
@@ -37,7 +39,7 @@ class MateriaPrimaTest extends TestCase
     public function test_crear_materia_prima()
     {
         $payload = [
-            'mat_pri_nombre' => 'Tela Negra',
+            'mat_pri_nombre' => Mensajes::TELA_NEGRA,
             'mat_pri_descripcion' => 'Tela poliéster negra',
             'mat_pri_unidad_medida' => 'metros',
             'mat_pri_cantidad' => 100,
@@ -52,12 +54,12 @@ class MateriaPrimaTest extends TestCase
                  ->assertJson([
                      'status' => 201,
                      'materia_prima' => [
-                         'mat_pri_nombre' => 'Tela Negra'
+                         'mat_pri_nombre' => Mensajes::TELA_NEGRA
                      ]
                  ]);
 
         $this->assertDatabaseHas('materia_prima', [
-            'mat_pri_nombre' => 'Tela Negra'
+            'mat_pri_nombre' => Mensajes::TELA_NEGRA
         ]);
     }
 

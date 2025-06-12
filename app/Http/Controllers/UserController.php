@@ -11,6 +11,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Seguridad;
 use Illuminate\Support\Facades\Session;
+use App\Constantes\Mensajes;
 
 class UserController extends Controller
 {
@@ -46,7 +47,7 @@ class UserController extends Controller
             return view('Perfil-Admin-Usuarios.user-list', compact('usuarios', 'tiposDocumentos', 'estados'));
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Error de conexión con el servidor');
+            return back()->with('error', Mensajes::ERROR_SERVER);
         }
     }
 
@@ -64,7 +65,7 @@ class UserController extends Controller
             $tipos_documentos = TipoDoc::all();
             return view('Perfil-Admin-Usuarios.user-new', compact('tipos_documentos'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Error de conexión con el servidor');
+            return back()->with('error', Mensajes::ERROR_SERVER);
         }
     }
 
@@ -118,7 +119,7 @@ class UserController extends Controller
             // Redirigir con mensaje de éxito
             return redirect()->route('user-list')->with('alerta', 'Usuario creado con éxito');
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Error de conexión con el servidor'])->withInput();
+            return back()->withErrors(['error' => Mensajes::ERROR_SERVER])->withInput();
         }
     }
 
@@ -139,8 +140,6 @@ class UserController extends Controller
                 return redirect()->route('user-list')->with('error', 'Usuario no encontrado.');
             }
 
-            $telefono = $request->input('usuario_telefono', null);
-
             // Actualiza solo los campos que están presentes en el request
             $usuario->update([
                 'usu_nombres' => $request->usu_nombres,
@@ -153,7 +152,7 @@ class UserController extends Controller
 
             return redirect()->route('user-list')->with('success', 'Usuario actualizado correctamente.');
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Error de conexión con el servidor']);
+            return back()->withErrors(['error' => Mensajes::ERROR_SERVER]);
         }
     }
 
@@ -184,7 +183,7 @@ class UserController extends Controller
 
             return redirect()->route('user-list')->with('success', 'Estado del usuario actualizado correctamente.');
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Error de conexión con el servidor']);
+            return back()->withErrors(['error' => Mensajes::ERROR_SERVER]);
         }
     }
 
@@ -225,7 +224,7 @@ class UserController extends Controller
             // Retornar la vista con los resultados
             return view('Perfil-Admin-Usuarios.user-search', compact('search', 'resultado'));
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Error de conexión con el servidor']);
+            return back()->withErrors(['error' => Mensajes::ERROR_SERVER]);
         }
     }
 }

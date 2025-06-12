@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\TipoDoc;
+use App\Constantes\Mensajes;
 
 class TipoDocController extends Controller
 {
@@ -32,7 +33,7 @@ class TipoDocController extends Controller
             $tipoDocumentos = TipoDoc::all(); // Reemplaza con tu lógica
             return view('Perfil-Admin-Usuarios.tipoDocumentos', compact('tipoDocumentos'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Error de conexión con el servidor');
+            return back()->with('error', Mensajes::ERROR_SERVER);
         }
     }
 
@@ -70,7 +71,7 @@ class TipoDocController extends Controller
             // Redirigir o devolver una respuesta (puede ser JSON, o redirigir a la lista)
             return redirect()->route('tipoDocumentos')->with('success', 'Tipo de documento creado correctamente');
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Error de conexión con el servidor'])->withInput();
+            return back()->withErrors(['error' => Mensajes::ERROR_SERVER])->withInput();
         }
     }
 
@@ -96,7 +97,7 @@ class TipoDocController extends Controller
 
             return redirect()->route('tipo-documentos')->with('success', 'descripcion actualizada correctamente.');
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Error de conexión con el servidor']);
+            return back()->withErrors(['error' => Mensajes::ERROR_SERVER]);
         }
     }
 

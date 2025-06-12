@@ -1,18 +1,18 @@
-const myModal = new bootstrap.Modal(document.getElementById('productionModal'))
-document.addEventListener('DOMContentLoaded', function() {
+const myModal = new bootstrap.Modal(document.getElementById('productionModal'));
+
+document.addEventListener('DOMContentLoaded', function () {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('productionDate_inicio').value = today;
 
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 500,
         locale: 'es',
-        dateClick: function(info) {
+        dateClick: function (info) {
             const clickedDate = info.dateStr;
 
             if (clickedDate < today) {
-                // Aquí puedes mostrar un mensaje si quieres
                 Swal.fire({
                     icon: 'warning',
                     title: 'Fecha no válida',

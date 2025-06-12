@@ -17,11 +17,13 @@ use App\Http\Controllers\Api\EstadoApiController;
 use App\Http\Controllers\Api\CargoApiController;
 use App\Http\Controllers\Api\ListaCargoApiController;
 use App\Http\Controllers\Api\TareaApiController;
+use App\Constantes\Mensajes;
+
 
 // Rutas para gestión de imágenes de usuarios
-Route::post('/user/image/{id}', [UserProfileController::class, 'storeImage'])->name('storeImage');
-Route::get('/user/image/{id}', [UserProfileController::class, 'getImage']);
-Route::put('/user/image/{id}', [UserProfileController::class, 'updateImage'])->name('updateImage');
+Route::post(Mensajes::USER_URL_IMG, [UserProfileController::class, 'storeImage'])->name('storeImage');
+Route::get(Mensajes::USER_URL_IMG, [UserProfileController::class, 'getImage']);
+Route::put(Mensajes::USER_URL_IMG, [UserProfileController::class, 'updateImage'])->name('updateImage');
 Route::delete('/user/image/delete/{id}', [UserProfileController::class, 'deleteImage'])->name('deleteImage');
 
 // Rutas para gestión de imágenes de buzos
@@ -55,9 +57,9 @@ Route::delete('/produccion-tareas-eliminar/{id}', [EmpTareaController::class, 'd
 // Rutas para el CRUD de Etapas
 Route::get('/etapas', [EtapaController::class, 'index']); // Obtener todas las etapas
 Route::post('/etapas', [EtapaController::class, 'store']); // Crear una nueva etapa
-Route::get('/etapas/{id}', [EtapaController::class, 'show']); // Obtener una etapa por ID
-Route::put('/etapas/{id}', [EtapaController::class, 'update']); // Actualizar una etapa
-Route::delete('/etapas/{id}', [EtapaController::class, 'destroy']); // Eliminar una etapa
+Route::get(Mensajes::ETAPAS_URL, [EtapaController::class, 'show']); // Obtener una etapa por ID
+Route::put(Mensajes::ETAPAS_URL, [EtapaController::class, 'update']); // Actualizar una etapa
+Route::delete(Mensajes::ETAPAS_URL, [EtapaController::class, 'destroy']); // Eliminar una etapa
 
 Route::put('/materia-prima-editar/{id}', [MateriaPrimaController::class, 'update'])->name('update-producto');
 
@@ -71,13 +73,13 @@ Route::controller(UserApiController::class)->group(function () {
     Route::put('/usuarios/{num_doc}', 'update');
     Route::put('/usuarios/cambiar-estado/{num_doc}', 'cambiarEstado');
     Route::get('/usuarios/buscar', 'buscar');
-    Route::get('/tipos-documentos', 'getTiposDocumentos');
+    Route::get(Mensajes::DOCUMENTOS_URL, 'getTiposDocumentos');
     Route::get('/estados', 'getEstados');
 });
 
 //rutas tipos documentos
-Route::get('/tipos-documentos', [TipoDocApiController::class, 'index']);
-Route::post('/tipos-documentos', [TipoDocApiController::class, 'store']);
+Route::get(Mensajes::DOCUMENTOS_URL, [TipoDocApiController::class, 'index']);
+Route::post(Mensajes::DOCUMENTOS_URL, [TipoDocApiController::class, 'store']);
 Route::put('/tipos-documentos/{id}', [TipoDocApiController::class, 'update']);
 Route::delete('/tipos-documentos/{id}', [TipoDocApiController::class, 'destroy']);
 
@@ -101,10 +103,10 @@ Route::post('/usuarios-cargos', [ListaCargoApiController::class, 'store']);
 
 //tareas
 Route::get('/tareas', [TareaApiController::class, 'index']); // Mostrar todas las tareas
-Route::get('/tareas/{id}', [TareaApiController::class, 'show']); // Mostrar una tarea
+Route::get(Mensajes::TAREAS_URL, [TareaApiController::class, 'show']); // Mostrar una tarea
 Route::post('/tareas', [TareaApiController::class, 'store']); // Crear tarea
-Route::put('/tareas/{id}', [TareaApiController::class, 'update']); // Actualizar tarea
-Route::delete('/tareas/{id}', [TareaApiController::class, 'destroy']); // Elimianar tarea
+Route::put(Mensajes::TAREAS_URL, [TareaApiController::class, 'update']); // Actualizar tarea
+Route::delete(Mensajes::TAREAS_URL, [TareaApiController::class, 'destroy']); // Elimianar tarea
 
 // Rutas de tareas asignadas a un operario
 Route::get('/tareas-asignadas', [TareaApiController::class, 'tareasAsignadas']);
